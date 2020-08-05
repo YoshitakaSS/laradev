@@ -1,15 +1,18 @@
 FROM php:7.4-fpm-buster
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
+WORKDIR /var/www
+
 # timezone environment
 ENV TZ=Asia/Tokyo \
     # locale
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
-    # # composer environment
-    # COMPOSER_ALLOW_SUPERUSER=1 \
-    # COMPOSER_HOME=/composer \
+    # composer environment
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_HOME=/composer \
+    PATH=$PATH:/composer/vendor/bin \
     # Laravel environment
     DB_CONNECTION=mysql \
     DB_HOST=db \
@@ -17,7 +20,6 @@ ENV TZ=Asia/Tokyo \
     DB_DATABASE=laravel_local \
     DB_USERNAME=phper \
     DB_PASSWORD=secret
-
 
 RUN apt-get update && \
     apt-get -y install git libicu-dev libonig-dev libzip-dev unzip locales && \
@@ -39,7 +41,8 @@ RUN docker-php-ext-install -j$(nproc) \
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer global require "laravel/installer"
+
 COPY ./php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 COPY ./php.ini /usr/local/etc/php/php.ini
-
-WORKDIR /var/www
