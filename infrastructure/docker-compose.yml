@@ -1,27 +1,53 @@
-version: "3.8"
+version: "3"
 volumes:
   db-store:
   php-fpm-socket:
+
+networks: 
+  net:
+    external:
+      name: net
+     
 services:
   app:
+    # container_name: ""
     build: ./docker/php
+    restart: always
     volumes:
       - php-fpm-socket:/var/run/php-fpm
-      - ../backend:/work/backend
+      - ../src:/var/www
       - ./docker/php/bash/.bash_history:/root/.bash_history
       - ./docker/php/bash/psysh:/root/.config/psysh
+    depends_on: 
+      - mysql
+    networks: 
+      - net
 
   web:
+    # container_name: ""
     build: ./docker/nginx
     ports:
       - 80:80
+    restart: always
     volumes:
       - php-fpm-socket:/var/run/php-fpm
-      - ../backend:/work/backend
+      - ../src:/var/www
+    depends_on: 
+      - app
+    networks: 
+      - net
 
-  db:
+  mysql:
+    # container_name: ""
     build: ./docker/mysql
     volumes:
       - db-store:/var/lib/mysql
     ports:
       - 3306:3306
+    networks: 
+      - net
+
+  redis:
+    image: "redis:latest"
+    networks: 
+      - net
