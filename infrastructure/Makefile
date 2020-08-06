@@ -5,11 +5,13 @@ build:
 create-project:
 	mkdir -p ./docker/php/bash/psysh
 	touch ./docker/php/bash/.bash_history
+	docker network create net
 	@make build
 	@make up
-	docker-compose exec app composer create-project --prefer-dist laravel/laravel .
-	docker-compose exec app chmod -R 777 storage/ bootstrap/cache/
+	docker-compose exec app composer create-project --prefer-dist laravel/laravel ../src
+	docker-compose exec app chmod -R 777 ../src/storage/ ../src/bootstrap/cache/
 install-recommend-packages:
+	docker-compose exec app composer require predis/predis
 	docker-compose exec app composer require doctrine/dbal
 	docker-compose exec app composer require --dev barryvdh/laravel-ide-helper
 	docker-compose exec app composer require --dev beyondcode/laravel-dump-server
@@ -38,6 +40,7 @@ restart:
 	@make up
 destroy:
 	docker-compose down --rmi all --volumes
+	docker network rm net
 destroy-volumes:
 	docker-compose down --volumes
 ps:
