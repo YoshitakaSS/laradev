@@ -19,7 +19,7 @@ services:
       - ./docker/php/bash/.bash_history:/root/.bash_history
       - ./docker/php/bash/psysh:/root/.config/psysh
     depends_on: 
-      - mysql
+      - db
     networks: 
       - net
 
@@ -33,11 +33,11 @@ services:
       - php-fpm-socket:/var/run/php-fpm
       - ../src:/var/www
     depends_on: 
-      - app
+      - db
     networks: 
       - net
 
-  mysql:
+  db:
     # container_name: ""
     build: ./docker/mysql
     volumes:
