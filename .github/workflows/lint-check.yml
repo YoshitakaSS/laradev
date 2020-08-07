@@ -6,11 +6,11 @@ jobs:
   lint-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+      - name: composer lint
+        uses: php-actions/composer@v1
+        with:
+          command: composer lint
+          run: 
         working-directory: ./src
-      - name: Check Lint
-        run: composer lint
-        working-directory: ./src
+
   
