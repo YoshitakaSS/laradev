@@ -10,7 +10,7 @@ jobs:
     - name: composer install
       run: composer install -n --prefer-dist
       working-directory: ./src
-    - name: composer
-      run: composer lint
-
-  
+    - name: PHP Code Sniffer
+      run: ./src/vendor/bin/phpcs --standard=./src/phpcs.xml .
+    - name: PHP Mess Detector
+      run: ./src/vendor/bin/phpmd ./src/app text ./src/phpmd.xml

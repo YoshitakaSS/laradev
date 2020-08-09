@@ -32,7 +32,7 @@
     </rule>
 
     <!-- 使われていないコードのチェック -->
-    <rule ref="rulesets/unusedcode.xml" />
+    <!-- <rule ref="rulesets/unusedcode.xml" /> -->
 
     <!-- テストのメソッドはカウントから除外 -->
     <rule ref="rulesets/codesize.xml/TooManyMethods">
