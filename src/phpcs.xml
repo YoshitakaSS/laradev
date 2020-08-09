@@ -30,7 +30,7 @@
     <!-- 除外ディレクトリ -->
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>/app/Exceptions/Handler.php</exclude-pattern>
-    <exclude-pattern>/app/Http/Kernel.php</exclude-pattern>
+    <exclude-pattern>/app/Http/</exclude-pattern>
     <exclude-pattern>_ide_helper.php</exclude-pattern>
     <exclude-pattern>_ide_helper_models.php</exclude-pattern>
     <exclude-pattern>.phpstorm.meta.php</exclude-pattern>
